@@ -4,7 +4,13 @@
 document.getElementById('portes-de-base').addEventListener('click', (e) => {
     if(e.target && e.target.nodeName === "LI") 
     {
-        let porte = e.target.textContent.split('(')[1].split(')')[0]; // Recupere le nom de la porte en utilisant les paranthèses pour split le string
+        var porte;
+        if(e.target.textContent.includes('BUFFER')) {
+            porte = 'BUFFER';
+        }
+        else {
+            porte = e.target.textContent.split('(')[1].split(')')[0]; // Recupere le nom de la porte en utilisant les paranthèses pour split le string
+        }
         document.getElementById('simulation-instruction').textContent = `Simulation de la porte logique: ${porte}.`; // Update instruction text
         addContent(porte); // Appelle la fonction pour ajouter le contenu de simulation
 
@@ -143,8 +149,6 @@ function addContent(porte) {
             content.innerHTML += '<p>La porte NON (NOT) inverse l\'état de son entrée.</p>';
             document.getElementById("output00").textContent = '1';
             document.getElementById("output01").textContent = '0';
-            document.getElementById("output10").textContent = '1';
-            document.getElementById("output11").textContent = '0';
 
             // Suppression de la deuxième entrée pour la porte NOT car elle n'en a qu'une
             document.getElementById("tabEntree1").remove(); 
@@ -161,6 +165,26 @@ function addContent(porte) {
             document.getElementById("tabEntree2").textContent = "Entrée";
 
             //suppression de la deuxième entrée dans la simulation + renommage
+            document.getElementById("labelInput2").remove();
+            document.getElementById("textEntree1").textContent = "Entrée";
+            break;
+        case 'BUFFER':
+            content.innerHTML += '<p>La porte BUFFER renvoie la même valeur que son entrée.</p>';
+            document.getElementById("output00").textContent = '0';
+            document.getElementById("output01").textContent = '1';
+
+            //Suppression de la dexuieme entrée comme pour NOT
+            document.getElementById("tabEntree1").remove(); 
+            document.getElementById("Entree1Bit1").remove();
+            document.getElementById("Entree1Bit2").remove();
+            document.getElementById("Entree1Bit3").remove();
+            document.getElementById("Entree1Bit4").remove();
+
+            document.getElementById("row3").remove();
+            document.getElementById("row4").remove();
+
+            document.getElementById("tabEntree2").textContent = "Entrée";
+
             document.getElementById("labelInput2").remove();
             document.getElementById("textEntree1").textContent = "Entrée";
             break;
@@ -205,9 +229,11 @@ function updateGate(porte) {
     var input2;
 
     // Récupération des valeurs des entrées
-    if(porte === 'NOT') {
+    //Si porte NOT, une seule entrée
+    if(porte === 'NOT' || porte === 'BUFFER'){
         input1 = document.getElementById('input1').checked ? 1 : 0;
     }
+    //sinon deux entrées 
     else{
         input1 = document.getElementById('input1').checked ? 1 : 0;
         input2 = document.getElementById('input2').checked ? 1 : 0;
@@ -238,14 +264,18 @@ function updateGate(porte) {
         case 'NOT':
             output = !input1;
             break;
+        case 'BUFFER':
+            output = input1;
+            break;
         default:
             output = 0;
     }
 
-    // Mise à jour de l'affichage de la sortie
-    if(porte === 'NOT')     console.log(`Input: ${input1}, Output: ${output}`);
-    else                    console.log(`Input1: ${input1}, Input2: ${input2}, Output: ${output}`);
+    //affichage dans la console pour debug
+    if(porte === 'NOT' || porte === 'BUFFER')       console.log(`Input: ${input1}, Output: ${output}`);
+    else                                            console.log(`Input1: ${input1}, Input2: ${input2}, Output: ${output}`);
 
-    document.getElementById('resultOutput').textContent = output ? 1 : 0;
+    // Mise à jour de l'affichage de la sortie
+    document.getElementById('resultOutput').textContent = 'sortie = ' + (output ? 1 : 0); //Le test tenernaire permet de forcer l'affiche 1 ou 0 au lieu de true/false (ce qui arrive lors du test NOT)
 }
 /*****************************************************************************************/

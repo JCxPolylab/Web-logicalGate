@@ -1,3 +1,34 @@
+<!------------------------------------------------
+Fichier      : index.html
+Auteur       : Jerry Crozet
+Date         : Juin 2024
+Description  : Page d’accueil du site consacré aux portes logiques.
+-------------------------------------------------
+Commentaires : 
+Le fichier contient la structure de base de la page d’accueil, 
+avec des sections dédiées aux portes logiques de base et avancées, 
+ainsi qu’une zone de simulation générée dynamiquement.
+
+La partie simulation est construite via le script script.js. 
+Pour faciliter la mise en forme et la visualisation du rendu attendu,
+j’ai utilisé une page HTML de prototype nommée prototypeSimu.html.
+Celle-ci n’est pas utilisée directement dans le site et sert uniquement 
+de maquette pour préparer la génération dynamique du contenu via innerHTML.
+
+Concernant la structure générale du site, je suis resté sur une approche simple 
+avec deux grandes sections :
+
+1) "portes-logiques" :  
+   Contient la liste des portes logiques disponibles, divisée en deux sous-sections  
+   (« portes de base » et « portes avancées ») afin de donner une petite touche graphique sympa.
+
+2) "simulation" :  
+   Comprend une phrase d’instruction et une zone de simulation dynamique.  
+   C’est la partie la plus complexe et centrale du site, où intervient le (script.js) 
+   pour générer le contenu en fonction de la porte logique sélectionnée.
+------------------------------------------------>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -37,9 +68,21 @@
         </section>
         <section id="simulation">
             <h2>Simulation de portes logiques</h2>
-            <p id="simulation-instruction">Cliquez sur une porte logique pour accéder à la simulation correspondante.</p>
+            <p id="simulation-instruction">Sélectionnez une porte logique dans la liste ci-dessus pour accéder à la simulation correspondante.</p>
             <!-- Zone de simulation dynamique -->
             <div id="simulation-area">
+                <img id="all-porte-image" src="image\\logic_gate.png" alt="Image des portes logiques">
+                <style>
+                    #all-porte-image {
+                        display: block;
+                        margin-left: auto;
+                        margin-right: auto;
+                        width: 50%;
+                        max-width: 300px;   
+                        height: auto;
+                        align-items: center;
+                    }
+                </style>
             </div>
         </section>
     </main>

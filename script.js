@@ -1,3 +1,24 @@
+/* ====================================================================
+   Projet       : Logical Gate Simulator
+   Fichier      : script.js
+   Auteur       : Jerry Crozet
+   Date         : 16/11/2025
+   Version      : 1.0
+   Objet        : Gestion des interactions utilisateur pour la simulation
+                  des portes logiques.
+   Description  : 
+   ====================================================================
+   Commentaires : J’ai réalisé ce script au maximum à l’aide de mes
+                  compétences en programmation. Je me suis parfois adié
+                  de ChatGPT pour  la syntaxe JavaScript ainsi que pour 
+                  trouver les fonctions me permettant de réaliser les
+                  fonctionnalités souhaitées.
+                  Je me suis également aidé du site Mmdn
+                  (https://developer.mozilla.org/fr/) 
+   ==================================================================== */
+
+
+
 /*****************************************************************************************/
 /* Ajouts des écouteurs d'événements pour les portes logiques au chargement de la page   */
 /*****************************************************************************************/
@@ -14,10 +35,23 @@ document.getElementById('portes-de-base').addEventListener('click', (e) => {
         document.getElementById('simulation-instruction').textContent = `Simulation de la porte logique: ${porte}.`; // Update instruction text
         addContent(porte); // Appelle la fonction pour ajouter le contenu de simulation
 
+
+        // Ajout des écouteurs d’événements pour les entrées
+        /* Nota : j’ai rencontré quelques soucis avec l’appel de ma fonction updateGate dans les écouteurs d’événements.
+        Elle n’était appelée qu’une seule fois lors de la sélection de la porte logique, mais pas lors du changement
+        d’état des checkbox.
+
+        D’après ChatGPT, je dois malgré tout passer ma fonction à travers une lambda, même si j’ai déjà un prototype
+        de fonction. Ce comportement n’est pas habituel par rapport aux autres langages dans lesquels j’ai l’habitude
+        de coder, ce qui m’a un peu bloqué pendant un moment.
+        */
         document.getElementById('input1').addEventListener('change', () => {updateGate(porte);});
         if(porte !== 'NOT') {
             document.getElementById('input2').addEventListener('change', () => {updateGate(porte);});
         }
+
+        // Scroll vers le bas du document lorsqu'une porte est sélectionnée dans la liste pour donner un effet de focus sur la nouvelle partie du doc
+        scrollTo(0, document.getElementById('simulation').offsetTop);
     }
 });
 
@@ -32,6 +66,8 @@ document.getElementById('portes-avancees').addEventListener('click', (e) => {
         if(porte !== 'NOT') {
             document.getElementById('input2').addEventListener('change', () => {updateGate(porte);});
         }
+
+        scrollTo(0, document.getElementById('simulation').offsetTop);
     }
 });
 /*****************************************************************************************/
@@ -87,11 +123,15 @@ function addContent(porte) {
                         +   '<div id="simulation-content">'
                         +       '<h3>Entrées:</h3>'
                         +       '<label id="labelInput1">'
-                        +           '<input type="checkbox" id="input1"><span id="textEntree1"> Entrée 1</span>'
+                        +           '<input type="checkbox" id="input1">'
+                        +           '<span id="textEntree1"> Entrée 1</span>'
+                        +           '<img id="porte-image1" src="" alt="Image de la porte logique">'
                         +       '</label>'
                         +       '</br>'
                         +       '<label id="labelInput2">'
-                        +           '<input type="checkbox" id="input2"><span id="textEntree2"> Entrée 2</span>'
+                        +           '<input type="checkbox" id="input2">'
+                        +           '<span id="textEntree2"> Entrée 2</span>'
+                        +           '<img id="porte-image2" src="" alt="Image de la porte logique">'
                         +       '</label>' 
                         +       '<label>'
                         +           '<output id="resultOutput"> Sortie ?</output>'
@@ -120,6 +160,19 @@ function addContent(porte) {
                         +           'margin-left: 200px;'
                         +           'font-weight: bold;'
                         +       '}'
+                        +       '#porte-image {'
+                        +           'max-width: 200px;'
+                        +           'max-height: 200px;'
+                        +       '}'
+                        +       '#porte-image1, #porte-image2 {'
+                        +           'max-width: 200px;'
+                        +           'max-height: 200px;'
+                        +       '}'
+                        +       '#simulation-content {'
+                        +           'margin-top: 20px;'
+                        +           'display: flex;'
+                        +           'flex-direction: column;'
+                        +       '}'
                         +   '</style>'   
 
     content.innerHTML = htmlContent + styleContent;
@@ -137,6 +190,9 @@ function addContent(porte) {
             document.getElementById("output01").textContent = '0';
             document.getElementById("output10").textContent = '0';
             document.getElementById("output11").textContent = '1';
+
+            document.getElementById("porte-image1").remove(); //Suppression de la première image pour éviter le chevauchement
+            document.getElementById("porte-image2").src = "image\\AND.png";
             break;
         case 'OR':
             content.innerHTML += '<p>La porte OU (OR) renvoie VRAI si au moins une entrée est VRAIE.</p>';
@@ -144,6 +200,9 @@ function addContent(porte) {
             document.getElementById("output01").textContent = '1';
             document.getElementById("output10").textContent = '1';
             document.getElementById("output11").textContent = '1';
+
+            document.getElementById("porte-image1").remove();
+            document.getElementById("porte-image2").src = "image\\OR.png";
             break;
         case 'NOT':
             content.innerHTML += '<p>La porte NON (NOT) inverse l\'état de son entrée.</p>';
@@ -167,6 +226,8 @@ function addContent(porte) {
             //suppression de la deuxième entrée dans la simulation + renommage
             document.getElementById("labelInput2").remove();
             document.getElementById("textEntree1").textContent = "Entrée";
+
+            document.getElementById("porte-image1").src = "image\\NOT.png";
             break;
         case 'BUFFER':
             content.innerHTML += '<p>La porte BUFFER renvoie la même valeur que son entrée.</p>';
@@ -187,6 +248,8 @@ function addContent(porte) {
 
             document.getElementById("labelInput2").remove();
             document.getElementById("textEntree1").textContent = "Entrée";
+
+            document.getElementById("porte-image1").src = "image\\BUFFER.png";
             break;
         case 'NAND':
             content.innerHTML += '<p>La porte NAND renvoie FAUX uniquement si toutes les entrées sont VRAIES.</p>';
@@ -194,6 +257,9 @@ function addContent(porte) {
             document.getElementById("output01").textContent = '1';
             document.getElementById("output10").textContent = '1';
             document.getElementById("output11").textContent = '0';
+
+            document.getElementById("porte-image1").remove();
+            document.getElementById("porte-image2").src = "image\\NAND.png";
             break;
         case 'NOR':
             content.innerHTML += '<p>La porte NOR renvoie VRAI uniquement si toutes les entrées sont FAUSSES.</p>';
@@ -201,6 +267,9 @@ function addContent(porte) {
             document.getElementById("output01").textContent = '0';
             document.getElementById("output10").textContent = '0';
             document.getElementById("output11").textContent = '0';
+
+            document.getElementById("porte-image1").remove();
+            document.getElementById("porte-image2").src = "image\\NOR.png";
             break;
         case 'XOR':
             content.innerHTML += '<p>La porte XOR renvoie VRAI si un nombre impair d\'entrées sont VRAIES.</p>';
@@ -208,6 +277,9 @@ function addContent(porte) {
             document.getElementById("output01").textContent = '1';
             document.getElementById("output10").textContent = '1';
             document.getElementById("output11").textContent = '0';
+
+            document.getElementById("porte-image1").remove();
+            document.getElementById("porte-image2").src = "image\\XOR.png";
             break;
         case 'XNOR':
             content.innerHTML += '<p>La porte XNOR renvoie VRAI si un nombre pair d\'entrées sont VRAIES.</p>';
@@ -215,6 +287,9 @@ function addContent(porte) {
             document.getElementById("output01").textContent = '0';
             document.getElementById("output10").textContent = '0';
             document.getElementById("output11").textContent = '1';
+
+            document.getElementById("porte-image1").remove();
+            document.getElementById("porte-image2").src = "image\\XNOR.png";
             break;
     }
     updateGate(porte); // Mise à jour initiale de la sortie

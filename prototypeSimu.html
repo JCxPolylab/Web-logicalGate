@@ -58,11 +58,17 @@
         <label id="labelInput2">
             <input type="checkbox" id="input2">
             <span id="textEntree2"> Entrée 2</span>
+            <img id="porte-image" src="image\\OR.png" alt="Image de la porte logique" style="max-width: 200px; max-height: 200px;">
         </label>
+    </div>
+    <div id="porte-description">
+    <label>
+        <output id="resultOutput"> Sortie ?</output>
+        
+    </label>
+    </div>
+    <div id="additional-info">
 
-        <label>
-            <output id="resultOutput"> Sortie ?</output>
-        </label>
     </div>
     <style>
         #tableDeVeritée {
@@ -87,6 +93,36 @@
         #resultOutput {
             margin-left: 200px;
             font-weight: bold;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            display: block;
+            margin-left: 30%;
+            margin-bottom: 10%;
+        }
+
+        #porte-image {
+            margin-top: 20px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: auto;
+            margin-left: 40%;            
+        }
+
+        #simulation-content {
+            margin-top: 20px;
+            align-items: center;  
+               
+                }
+        #labelInput1, #labelInput2 {
+            font-weight: bold;
+            margin-right: 20px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            margin-left: 20%;
         }
     </style>
 </body>

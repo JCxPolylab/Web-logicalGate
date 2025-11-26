@@ -315,7 +315,6 @@ function updateGate(porte) {
         input1 = input1;
         input2 = input2;
     }
-
     // Calcul de la sortie en fonction de la porte logique sélectionnée
     switch(porte) {
         case 'AND':
